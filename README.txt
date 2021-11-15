@@ -1,3 +1,5 @@
+# Running of scripts
+
 1) [optional] Determine transcript isoform per long read, for a specific gene
    Requires .bed file with start/end positions for each exon of interest
    
@@ -7,10 +9,10 @@
    Required input files are bam file, and barcode 'whitelist' from short-reads.
    If transcript isoform file is specified, also merge in the transcript isoform per read, and exclude
      any reads which do not span the exons of interest.
-   Parameters available with --help, or see below.
 
    python softclip_bestN_barcodes.py -b <sample>.bam -c <sample>.barcodes.tsv.gz -s plus
-
+   
+   Parameters available with --help, or see below.
    '--bam', '-b', help='input bam file', type=str, required=True
    '--barcodes', '-c', help='cellranger barcodes file', type=str, required=True
    '--strand', '-s', help='gene strand', type=str, required=True, choices=['plus','minus','both']
@@ -27,5 +29,9 @@
    awk -F'\t' '{if(NR == 1 || ($6 < 3 || $5 > 0.15)) print $4, $2, $5, $3, $6, $7, $8, $9}' \
      <sample>.barcode_match.tsv > <sample>.barcode_info.txt
    sed -i '1 s/^.*$/best_barcode exon_skip max_score strand edit_dist start_pos barcode+flanking search_len/' <sample>.barcode_info.txt
+
+# License
+Software in this repository is distributed according to the terms of the MIT license, as provided in the LICENSE file.
+
 
    

@@ -134,7 +134,7 @@ if args.exonrds:
 #   [adapter][polyT] cDNA [10X internal adapter][UMI][barcode][Illumina R1 adapter]
 i = 0; tot_rds = 0; adapter_flank_bp = 6; last_qname = 'none';
 
-out_csv.writerow(['rd_name', 'exon_skip', 'strand', 'barcode', 'score', 'dist', 'pos', 'adapter|BC|UMI', 'search_len'])
+out_csv.writerow(['rd_name', 'exon_skip', 'strand', 'barcode', 'score', 'dist', 'pos', 'adapter|BC|UMI', 'search_len', 'align_start', 'align_end'])
 sc_3or5 = '5prime' if args.strand == 'plus' else '3prime'
 
 for samrd in sam_input.fetch(until_eof=True):
@@ -182,7 +182,8 @@ for samrd in sam_input.fetch(until_eof=True):
         [dist, pos] = scb.calc_edit_distance(scb.reverse_complement(bc_score[0]), search_seq, 16)
         barcode_with_flanking = format_bc_string(search_seq, 'rev', pos)
         bc_pos = pos  
-      out_csv.writerow([samrd.qname, xskip_pattern, align_strand, bc_score[0], bc_score[1], dist, bc_pos, barcode_with_flanking, len(search_seq)])
+      out_csv.writerow([samrd.qname, xskip_pattern, align_strand, bc_score[0], bc_score[1], dist, bc_pos, barcode_with_flanking, len(search_seq),
+	                    samrd.reference_start, samrd.reference_end])
       if dist < 2: break
 
 print(i, "sam records read")
